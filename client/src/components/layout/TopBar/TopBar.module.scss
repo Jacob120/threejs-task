@@ -1,0 +1,7 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  border-bottom: 1px solid rgba(7, 7, 7, 0.1);
+  text-transform: uppercase;
+  font-size: $base-size * 1.1;
+}

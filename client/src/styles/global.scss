@@ -12,3 +12,23 @@ body {
   font-family: 'Poppins', sans-serif !important;
   color: $main-color !important;
 }
+
+// Override buttons styling
+
+.btn {
+  border-radius: 0;
+}
+
+.btn-outline-secondary {
+  color: $main-color;
+  border-color: $main-color;
+
+  &:hover {
+    background-color: $main-color !important;
+  }
+}
+
+// Override breadcrumb link style
+.breadcrumb-item > a {
+  text-decoration: none;
+}
