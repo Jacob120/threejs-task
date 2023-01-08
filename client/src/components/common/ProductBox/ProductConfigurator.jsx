@@ -1,17 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { Link } from 'react-router-dom';
 
 import styles from './ProductConfigurator.module.scss';
-import { Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
 
-const ProductConfigurator = () => {
+const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
   const containerRef = useRef();
-  const [woodFile, setWoodFile] = useState('lightWood.jpg');
   const [camera, setCamera] = useState(null);
   const [renderer, setRenderer] = useState(null);
   const [scene, setScene] = useState(null);
   const [table, setTable] = useState(null);
+  const [woodFile, setWoodFile] = useState('lightWood.jpg');
+  const [materialName, setMaterialName] = useState('');
 
   useEffect(() => {
     const camera = new THREE.PerspectiveCamera(
@@ -157,23 +159,71 @@ const ProductConfigurator = () => {
     });
   }, [table, woodFile]);
 
+  const handleMaterialChange = (fileName, material) => {
+    setWoodFile(fileName);
+    setMaterialName(material);
+  };
+
   return (
-    <div>
-      <div className={styles.root} ref={containerRef} />
-      <Dropdown>
-        <Dropdown.Toggle variant='secondary' id='material-dropdown'>
-          Choose wood material
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={() => setWoodFile('lightWood.jpg')}>
-            Light wood
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => setWoodFile('darkWood.jpg')}>
-            Dark wood
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
+    <Card style={{ height: '100%' }} className={styles.card_wrapper}>
+      <div className={styles.tree_body} ref={containerRef} />
+      <Card.Body>
+        <Row>
+          <Col className={'mb-3 ' + styles.label}>
+            <span className={'mx-1 ' + styles.label_sale}>Sale</span>
+            <span className={'mx-1 ' + styles.label_top}>Top</span>
+
+            <span className={'mx-1 ' + styles.label_out}>Out of Stock</span>
+          </Col>
+        </Row>
+        <p className={styles.categories_text}>Dinning room, Table</p>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text className='m-0 mb-1'>
+          <span>
+            <span className={styles.new_price}>Now ${price}</span>{' '}
+            <span className={styles.old_price}>Was ${oldPrice}</span>
+          </span>
+        </Card.Text>
+        <Row>
+          <Col>
+            <Dropdown>
+              <Dropdown.Toggle
+                variant='outline-secondary'
+                id='material-dropdown'
+              >
+                Material
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() =>
+                    handleMaterialChange('lightWood.jpg', 'Light Wood')
+                  }
+                >
+                  Light wood
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() =>
+                    handleMaterialChange('darkWood.jpg', 'Dark Wood')
+                  }
+                >
+                  Dark wood
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+          <Col>
+            <Button
+              variant='outline-secondary'
+              onClick={() =>
+                addToCart({ id, name, price, oldPrice }, 1, materialName)
+              }
+            >
+              Add to cart
+            </Button>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

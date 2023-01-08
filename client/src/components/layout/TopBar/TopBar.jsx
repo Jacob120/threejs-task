@@ -2,13 +2,8 @@ import Nav from 'react-bootstrap/Nav';
 import styles from './TopBar.module.scss';
 import Container from 'react-bootstrap/Container';
 import { BsPerson, BsTelephone, BsPersonPlus } from 'react-icons/bs';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const TopBar = () => {
-  let location = useLocation();
-  useEffect(() => {}, [location]);
-
   return (
     <Container>
       <Nav className={`justify-content-end ${styles.root}`} activeKey='/'>

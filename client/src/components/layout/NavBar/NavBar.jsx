@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import CartContext from '../../../context/CartContext';
+
 import styles from './NavBar.module.scss';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  Button,
+} from 'react-bootstrap';
 import { BsCart, BsSearch } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-// import { useGetCartQuery } from '../../../redux/cartSlice';
 import { useLocation } from 'react-router-dom';
 
 const NavBar = () => {
-  const user = sessionStorage.getItem('username');
   let location = useLocation();
-
   useEffect(() => {}, [location]);
+
+  const { cart } = useContext(CartContext);
+  const getTotalQuantity = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   // const { data: items } = useGetCartQuery();
   // const cart = items;
@@ -53,9 +60,9 @@ const NavBar = () => {
             <Nav.Link href='/'>Home</Nav.Link>
             <Nav.Link href='/'>Shop</Nav.Link>
             <NavDropdown title='Categories' id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>Men's</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>Women's</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.3'>All</NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.1'>Category 1</NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.2'>Category 2</NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.3'>Category 3</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Row className='justify-content-end'>
@@ -90,7 +97,7 @@ const NavBar = () => {
                     styles.cart_quantity
                   }
                 >
-                  0{/* {getTotalQuantity() || 0} */}
+                  {getTotalQuantity}
                 </p>
               </Link>
             </Col>

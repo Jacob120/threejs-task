@@ -1,4 +1,45 @@
-.root {
-  height: 300px;
-  width: 300px;
+@import '../../../styles/settings.scss';
+
+.card_wrapper {
+  border: none;
+
+  .tree_body {
+    height: 300px;
+    width: 100%;
+  }
+
+  .categories_text {
+    font-size: 13px;
+    opacity: 0.7;
+    margin: 0;
+    padding-bottom: 6px;
+  }
+
+  .label {
+    font-size: $base-size;
+    color: $text-color-white;
+    &_sale {
+      padding: 5px;
+      background-color: $label-sale;
+    }
+    &_top {
+      padding: 5px;
+      background-color: $label-top;
+    }
+    &_out {
+      padding: 5px;
+      background-color: $label-out;
+    }
+  }
+
+  .new_price {
+    color: $price-color-new;
+    font-weight: bold;
+    padding-right: 8px;
+  }
+
+  .old_price {
+    color: $price-color-old;
+    text-decoration: line-through;
+  }
 }
