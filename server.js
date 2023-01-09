@@ -66,8 +66,15 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/public')));
+
 app.use((req, res) => {
   res.status(404).send({ message: 'Not found...' });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
 const server = app.listen(process.env.PORT || 8000, () => {
