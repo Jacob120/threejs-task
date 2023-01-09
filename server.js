@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
+const path = require('path');
 
 const connectToDB = require('./db');
 const sendMail = require('./nodemailer');
