@@ -32,12 +32,25 @@ exports.getById = async (req, res) => {
 
 exports.postOne = async (req, res) => {
   try {
-    const { name, price, oldPrice, materialName } = req.body;
+    const {
+      name,
+      price,
+      oldPrice,
+      materialName,
+      image,
+      onSale,
+      onTop,
+      outOfStock,
+    } = req.body;
     const newProduct = new Product({
       name: name,
       price: price,
       oldPrice: oldPrice,
       materialName: materialName,
+      image: image,
+      onSale: onSale,
+      onTop: onTop,
+      outOfStock: outOfStock,
     });
     await newProduct.save();
     res.json({ message: 'OK' });
@@ -47,7 +60,16 @@ exports.postOne = async (req, res) => {
 };
 
 exports.putOne = async (req, res) => {
-  const { name, price, oldPrice, materialName } = req.body;
+  const {
+    name,
+    price,
+    oldPrice,
+    materialName,
+    image,
+    onSale,
+    onTop,
+    outOfStock,
+  } = req.body;
   try {
     const prod = await Product.findById(req.params.id);
     if (prod) {
@@ -59,6 +81,10 @@ exports.putOne = async (req, res) => {
             price: price,
             oldPrice: oldPrice,
             materialName: materialName,
+            image: image,
+            onSale: onSale,
+            onTop: onTop,
+            outOfStock: outOfStock,
           },
         }
       );
