@@ -1,19 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Link } from 'react-router-dom';
 
 import styles from './ProductConfigurator.module.scss';
 import { Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
 
-const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
+const ProductConfigurator = ({
+  _id,
+  name,
+  price,
+  oldPrice,
+  materialName,
+  image,
+  onSale,
+  topSale,
+  outOfStock,
+  addToCart,
+}) => {
   const containerRef = useRef();
-  const [camera, setCamera] = useState(null);
-  const [renderer, setRenderer] = useState(null);
-  const [scene, setScene] = useState(null);
   const [table, setTable] = useState(null);
-  const [woodFile, setWoodFile] = useState('lightWood.jpg');
-  const [materialName, setMaterialName] = useState('');
+  const [woodFile, setWoodFile] = useState(image);
+  const [material, setMaterial] = useState(materialName);
+  const [disabled, setDisabled] = useState(outOfStock ? true : false);
 
   useEffect(() => {
     const camera = new THREE.PerspectiveCamera(
@@ -22,7 +30,6 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
       0.1,
       1000
     );
-    setCamera(camera);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -34,7 +41,6 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
       containerRef.current.clientHeight
     );
     containerRef.current.appendChild(renderer.domElement);
-    setRenderer(renderer);
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xeeeeee);
@@ -120,11 +126,11 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
     floor.position.set(0, -3.5, 0);
     scene.add(floor);
 
-    // Add controls that enables rotation and zoom
+    // Add controls that enables rotation
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI / 2;
     controls.enableRotate = true;
-    controls.enableZoom = true;
+    controls.enableZoom = false;
 
     // Load object into the scene
     const objectLoader = new THREE.ObjectLoader();
@@ -135,7 +141,7 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
 
       scene.add(object);
     });
-    setScene(scene);
+
     // Rendering the scene
     const render = () => {
       requestAnimationFrame(render);
@@ -161,7 +167,7 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
 
   const handleMaterialChange = (fileName, material) => {
     setWoodFile(fileName);
-    setMaterialName(material);
+    setMaterial(material);
   };
 
   return (
@@ -170,19 +176,26 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
       <Card.Body>
         <Row>
           <Col className={'mb-3 ' + styles.label}>
-            <span className={'mx-1 ' + styles.label_sale}>Sale</span>
-            <span className={'mx-1 ' + styles.label_top}>Top</span>
-
-            <span className={'mx-1 ' + styles.label_out}>Out of Stock</span>
+            {onSale && (
+              <span className={'mx-1 ' + styles.label_sale}>Sale</span>
+            )}
+            {topSale && <span className={'mx-1 ' + styles.label_top}>Top</span>}
+            {outOfStock && (
+              <span className={'mx-1 ' + styles.label_out}>Out of Stock</span>
+            )}
           </Col>
         </Row>
         <p className={styles.categories_text}>Dinning room, Table</p>
         <Card.Title>{name}</Card.Title>
         <Card.Text className='m-0 mb-1'>
-          <span>
-            <span className={styles.new_price}>Now ${price}</span>{' '}
-            <span className={styles.old_price}>Was ${oldPrice}</span>
-          </span>
+          {onSale ? (
+            <span>
+              <span className={styles.new_price}>Now ${price}</span>{' '}
+              <span className={styles.old_price}>Was ${oldPrice}</span>
+            </span>
+          ) : (
+            <span className={styles.new_price}>${price}</span>
+          )}
         </Card.Text>
         <Row>
           <Col>
@@ -214,8 +227,9 @@ const ProductConfigurator = ({ id, name, price, oldPrice, addToCart }) => {
           <Col>
             <Button
               variant='outline-secondary'
+              disabled={disabled}
               onClick={() =>
-                addToCart({ id, name, price, oldPrice }, 1, materialName)
+                addToCart({ _id, name, price, oldPrice }, 1, materialName)
               }
             >
               Add to cart

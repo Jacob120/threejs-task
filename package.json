@@ -1,0 +1,32 @@
+{
+  "name": "lignumsoft-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "nodemon server.js",
+    "start:prod": "node dist/main.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jacob120/threejs-task.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jacob120/threejs-task/issues"
+  },
+  "homepage": "https://github.com/Jacob120/threejs-task#readme",
+  "dependencies": {
+    "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "mongo-express": "^1.0.0",
+    "mongodb": "^4.13.0",
+    "mongoose": "^6.8.3",
+    "nodemailer": "^6.8.0",
+    "nodemon": "^2.0.20"
+  }
+}

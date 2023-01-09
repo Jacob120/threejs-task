@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import CartContext from './context/CartContext';
 import Footer from './components/layout/Footer/Footer';
@@ -10,17 +10,19 @@ import Home from './components/views/Home/Home';
 import { NotFound } from './components/views/NotFound/NotFound';
 
 function App() {
-  // Initialize an empty cart
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(sessionStorage.getItem('cart')) || []
+  );
 
   const addToCart = (product, quantity, material) => {
-    // Check if the product is already in the cart
-    const existingProduct = cart.find((item) => item.product.id === product.id);
+    const existingProduct = cart.find(
+      (item) => item.product._id === product._id
+    );
 
     if (existingProduct) {
       setCart(
         cart.map((item) =>
-          item.product.id === product.id
+          item.product._id === product._id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         )
@@ -28,11 +30,18 @@ function App() {
     } else {
       setCart([...cart, { product, quantity, material }]);
     }
+    sessionStorage.setItem('cart', JSON.stringify(cart));
   };
-  console.log(cart);
+
   const removeFromCart = (product) => {
-    setCart(cart.filter((item) => item.product.id !== product.id));
+    console.log('rem prod', product);
+    setCart(cart.filter((item) => item.product._id !== product.product._id));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
   };
+
+  useEffect(() => {
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   return (
     <main>
