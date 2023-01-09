@@ -65,8 +65,6 @@ const CartPage = () => {
     }
   };
 
-  console.log(isSuccess);
-
   return (
     <div className={'pb-5 ' + styles.root}>
       <h2 className={'text-center ' + styles.header}>Shopping Cart</h2>

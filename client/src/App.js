@@ -34,7 +34,6 @@ function App() {
   };
 
   const removeFromCart = (product) => {
-    console.log('rem prod', product);
     setCart(cart.filter((item) => item.product._id !== product.product._id));
     sessionStorage.setItem('cart', JSON.stringify(cart));
   };
