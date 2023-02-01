@@ -26,20 +26,6 @@ const NavBar = () => {
     0
   );
 
-  // const { data: items } = useGetCartQuery();
-  // const cart = items;
-
-  // const getTotalQuantity = () => {
-  //   let total = 0;
-
-  //   user &&
-  //     cart &&
-  //     cart.forEach((item) => {
-  //       total += item.quantity;
-  //     });
-  //   return total;
-  // };
-
   return (
     <Navbar expand='lg' sticky='top' className={styles.root}>
       <Container>
